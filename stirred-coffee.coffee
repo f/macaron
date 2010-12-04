@@ -1,6 +1,7 @@
 fs = require 'fs'
 coffee = require 'coffee-script'
 nodes = require 'coffee-script/nodes'
+clone = (require './lib/clone').clone
 
 # Grab source
 macroSource = (fs.readFileSync process.argv[0]).toString()
@@ -17,32 +18,6 @@ macroNodes.expressions.forEach (node) ->
 	name = node.variable.base.value
 	code = node.value
 	macros[name] = code
-
-cloneArray = (a) ->
-	n = []
-	i = 0
-	while i < a.length
-		n[i] = clone a[i]
-		i++
-	n
-	
-cloneObj = (o) ->
-	c = {}
-	for key, value of o
-		c[key] = clone value
-	c.constructor = o.constructor
-	c.__proto__ = o.__proto__
-	c
-	
-clone = (o) ->
-	switch typeof o
-		when 'undefined', 'number', 'string', 'boolean', 'function' then o
-		when 'object'
-			if o instanceof Array
-				cloneArray o
-			else
-				cloneObj o
-		else console.log "found non-cloneable type: #{typeof o}"
 		
 
 # Walk main node tree
