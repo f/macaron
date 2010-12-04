@@ -50,14 +50,18 @@ macroize = (n, replace) ->
 
 	name = n.variable?.base?.value
 	return if not name or not macros[name]
-	console.log macros[name].toString()
+
 	macro = clone macros[name]
-	console.log macro.toString()
+
 	args = {}
 
 	for param, i in macro.params
 		name = param.name.value
-		args[name] = n.args[i]
+		if name == "$body"
+			# Unwrap body of expression
+			args[name] = n.args[i].body
+		else
+			args[name] = n.args[i]
 
 	replacingWalk macro, (node, replace) ->
 		return if node.constructor != nodes.Value
