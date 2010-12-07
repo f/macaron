@@ -13,6 +13,8 @@ mainNodes = coffee.nodes coffee.tokens mainSource
 
 # Store all Macros by name
 macros = {}
+# Unique id's for variable name generation
+uid = 0
 
 macroNodes.expressions.forEach (node) ->
 	name = node.variable.base.value
@@ -54,6 +56,7 @@ macroize = (n, replace) ->
 	macro = clone macros[name]
 
 	args = {}
+	vars = {}
 
 	for param, i in macro.params
 		name = param.name.value
@@ -66,8 +69,13 @@ macroize = (n, replace) ->
 	replacingWalk macro, (node, replace) ->
 		return if node.constructor != nodes.Value
 		ref = node.base?.value
-		return if not args[ref]
-		replace args[ref]
+		if args[ref]
+			replace args[ref]
+		else if ref?.indexOf('$') == 0
+			varName = ref.substring 1
+			varName = (vars[varName] || (vars[varName] = "__#{varName}#{uid++}"))
+			node.base.value = varName
+			
 
 	replace macro.body
 				

@@ -1,5 +1,4 @@
-ERRZLESS = ($$body) ->
-	try
-		$$body
-	catch e
-		console.log "Something didn't #{e}"
+SWAP = (v1, v2) ->
+	$tmp = v1
+	v1 = v2
+	v2 = $tmp
