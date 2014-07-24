@@ -1,0 +1,31 @@
+{
+  "name": "macaron",
+  "version": "0.0.0",
+  "description": "CoffeeScript Macros",
+  "main": "index.coffee",
+  "bin": {
+    "macaron": "./bin/macaron"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "macaron": "./node_modules/.bin/coffee ./bin/macaron"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/f/macaron"
+  },
+  "keywords": [
+    "macro",
+    "coffeescript"
+  ],
+  "author": "Fatih Kadir Akin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/f/macaron/issues"
+  },
+  "homepage": "https://github.com/f/macaron",
+  "dependencies": {
+    "coffee-script": "^1.7.1",
+    "optimist": "^0.6.1"
+  }
+}

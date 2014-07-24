@@ -1,13 +1,4 @@
-a = 2
-b = 3
-c = 4
-d = 5
+z = (x)-> 2 * x
 
-console.log "a = #{a}, b = #{b}"
-console.log "c = #{c}, d = #{d}"
-
-SWAP a, b
-SWAP c, d
-
-console.log "a = #{a}, b = #{b}"
-console.log "c = #{c}, d = #{d}"
+for x in [1..10]
+  console.log $let x, z
