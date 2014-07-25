@@ -145,9 +145,9 @@ ReferenceError: $tmp is not defined
 
 ## TODO
 
-  [] Create Grunt Plugin
-  [] Browserify Transform
-  [] Do something for WebPack
+  - Create Grunt Plugin
+  - Browserify Transform
+  - Do something for WebPack
 
 ## License
 
