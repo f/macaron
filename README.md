@@ -143,11 +143,17 @@ When you run it, it will generate an error:
 ReferenceError: $tmp is not defined
 ```
 
+## TODO
+
+  [] Create Grunt Plugin
+  [] Browserify Transform
+  [] Do something for WebPack
+
 ## License
 
 MIT: [f.mit-license.org][3]
 
-## The Idea
+### The Idea
 
 > A fork of [davidpadbury/stirred-coffee][1], based on the [blog post][2] about it.
 
