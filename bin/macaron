@@ -1,11 +1,13 @@
 #!/usr/bin/env coffee
 fs = require 'fs'
 os = require 'os'
+
 argv = require 'optimist'
-	.usage 'Usage: $0 [MACRO FILE] [SOURCE FILE] [OPTIONS]'
-	.demand 2
-	.boolean ['b', 'c', 'bare', 'compile', 'concat']
+	.usage 'Usage: $0 [MACRO FILE] [SOURCE FILES...] [OPTIONS]'
+	.demand 1
+	.boolean ['b', 'c', 'bare', 'compile', 'concat', 'stdin']
 	.alias 'b', 'bare'
+	.alias 's', 'stdin'
 	.alias 'c', 'compile'
 	.default
 		b: yes
@@ -15,19 +17,32 @@ argv = require 'optimist'
 
 Macaron = require '../lib/index.coffee'
 [macro, files...] = argv._
-
 macaron = new Macaron
-if argv.concat
-	source = (macaron.getSource file for file in files)
 
 # Fix these fucked up code
-if argv.compile or argv.c
-	if argv.concat
-		console.log macaron.compileSource macaron.getSource(macro), source.join(os.EOL), argv
-	else
-		console.log macaron.compileFile macro, file, argv for file in files
+
+if argv.stdin
+	process.stdin.resume()
+	process.stdin.setEncoding 'utf8'
+	source = ''
+	process.stdin.on 'data', (data)->
+		source += data
+
+	process.stdin.on 'end', ->
+		if argv.compile
+			console.log macaron.compileSource macaron.getSource(macro), source, argv
+
 else
 	if argv.concat
-		eval macaron.compileSource macaron.getSource(macro), source.join(os.EOL), argv
+		source = (macaron.getSource file for file in files)
+
+	if argv.compile
+		if argv.concat
+			console.log macaron.compileSource macaron.getSource(macro), source.join(os.EOL), argv
+		else
+			console.log macaron.compileFile macro, file, argv for file in files
 	else
-		macaron.compileFileAndRun macro, file, argv for file in files
+		if argv.concat
+			eval macaron.compileSource macaron.getSource(macro), source.join(os.EOL), argv
+		else
+			macaron.compileFileAndRun macro, file, argv for file in files

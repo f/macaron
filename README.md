@@ -145,6 +145,25 @@ When you run it, it will generate an error:
 ReferenceError: $tmp is not defined
 ```
 
+### Reading from STDIN
+
+You can simply use standard input to run macaron:
+
+```bash
+echo "x = 1; y = 2; swap x, y; console.log x, y" | macaron -scb examples/macros.coffee | node
+```
+
+## Command Line Usage
+
+```
+Usage: coffee ./bin/macaron [MACRO FILE] [SOURCE FILES...] [OPTIONS]
+
+Options:
+  -b, --bare     [default: true]
+  -c, --compile  [default: false]
+  --concat       [string]  [default: true]
+```
+
 ## TODO
 
   - Create Grunt Plugin
