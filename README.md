@@ -2,11 +2,6 @@
 
 Macros for CoffeeScript.
 
-> A fork of [davidpadbury/stirred-coffee][1], based on the [blog post][2] about it.
-
-[1]: http://github.com/davidpadbury/stirred-coffee
-[2]: http://blog.davidpadbury.com/2010/12/09/making-macros-in-coffeescript/
-
 ## Installation
 
 ```bash
@@ -147,3 +142,15 @@ When you run it, it will generate an error:
 ```
 ReferenceError: $tmp is not defined
 ```
+
+## License
+
+MIT: [f.mit-license.org][3]
+
+## The Idea
+
+> A fork of [davidpadbury/stirred-coffee][1], based on the [blog post][2] about it.
+
+[1]: http://github.com/davidpadbury/stirred-coffee
+[2]: http://blog.davidpadbury.com/2010/12/09/making-macros-in-coffeescript/
+[3]: http://f.mit-license.org

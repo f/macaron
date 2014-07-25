@@ -1,5 +1,5 @@
-fs 				  = require 'fs'
-coffee 		  = require 'coffee-script'
+fs = require 'fs'
+coffee = require 'coffee-script'
 
 module.exports = class Macaron
 
