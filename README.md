@@ -82,7 +82,8 @@ You can also use code blocks to use efficiently. To do this, just use splats
 of CoffeeScript (`...`)
 
 ```coffeescript
-macro.scope = (block...)->
+# Create a macro named do_something which accepts a code block
+macro.do_something = (block...)->
   hello = "world"
   do ->
     block
@@ -91,7 +92,8 @@ macro.scope = (block...)->
 Then you can simply call like a callback
 
 ```coffeescript
-scope ->
+# Call the macro with a code block
+do_something ->
   console.log hello
 ```
 
