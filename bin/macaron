@@ -1,94 +1,20 @@
 #!/usr/bin/env coffee
-fs 				= require 'fs'
-{argv} 		= require 'optimist'
-coffee 		= require 'coffee-script'
-{clone} 	= require '../lib/clone.coffee'
+argv    = require 'optimist'
+	.usage 'Usage: $0 [MACRO FILE] [SOURCE FILE] [OPTIONS]'
+	.demand 2
+	.boolean ['b', 'c', 'bare', 'compile']
+	.alias 'b', 'bare'
+	.alias 'c', 'compile'
+	.default
+		b: yes
+		c: no
+	.argv
 
-class Macaron
+Macaron = require '../lib/index.coffee'
+[macro, main] = argv._
 
-	macros: {}
-	# Unique id's for variable name generation
-	uid: 0
-
-	constructor: (@macroFile, @mainFile)->
-		mainNodes = @getFileNodes @mainFile
-		@macros = @parseMacros macroFile
-
-		@replacingWalk mainNodes, @macroize.bind(this)
-		@compiled = mainNodes.compile { bare: true }
-
-	parseMacros: (macroFile)->
-		macros = {}
-		nodes = @getFileNodes macroFile
-		nodes.expressions.forEach (node) =>
-			name = node.variable.base.value
-			macros[node.variable.base.value] = node.value
-		macros
-
-	replacingWalk: (node, visitor) ->
-		return if not node.children
-
-		node.children.forEach (childName) =>
-			child = node[childName]
-
-			return unless child
-
-			if child instanceof Array
-				# There really must be a way to do a normal for loop
-				i = 0
-				while i < child.length
-					visitor child[i], (replacement) =>
-						child[i] = replacement
-
-					@replacingWalk child[i], visitor
-					i++
-			else
-				visitor child, (replacement) =>
-					child = node[childName] = replacement
-
-				@replacingWalk child, visitor
-
-	macroize: (node, replace) ->
-		return if node.constructor.name isnt 'Call'
-
-		name = node.variable?.base?.value
-		return if not name or not @macros[name]
-
-		macro = clone @macros[name]
-
-		args = {}
-		vars = {}
-
-		for param, i in macro.params
-			name = param.name.value
-			if name == "$body"
-				# Unwrap body of expression
-				args[name] = node.args[i].body
-			else
-				args[name] = node.args[i]
-
-		@replacingWalk macro, (node, replace) =>
-			return if node.constructor.name isnt 'Value'
-			ref = node.base?.value
-			if args[ref]
-				replace args[ref]
-			else if ref?.indexOf('$') == 0
-				varName = ref.substring 1
-				varName = (vars[varName] || (vars[varName] = "__#{varName}#{@uid++}"))
-				node.base.value = varName
-
-		replace macro.body
-
-	getFileNodes: (file)->
-		@getNodes @getSource file
-
-	getSource: (file)->
-		fs.readFileSync(file).toString()
-
-	getNodes: (source)->
-		coffee.nodes coffee.tokens source
-
-[macroFile, mainFile] = argv._
-macaron = new Macaron macroFile, mainFile
-
-console.log macaron.compiled
+macaron = new Macaron
+if argv.compile or argv.c
+	console.log macaron.compileFile macro, main, argv
+else
+	macaron.compileFileAndRun macro, main, argv
