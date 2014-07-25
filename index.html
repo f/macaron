@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=640" />
+
+    <link rel="stylesheet" href="stylesheets/core.css" media="screen"/>
+    <link rel="stylesheet" href="stylesheets/mobile.css" media="handheld, only screen and (max-device-width:640px)"/>
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css"/>
+
+    <script type="text/javascript" src="javascripts/modernizr.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script type="text/javascript" src="javascripts/headsmart.min.js"></script>
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $('#main_content').headsmart()
+      })
+    </script>
+    <title>Macaron by f</title>
+  </head>
+
+  <body>
+    <a id="forkme_banner" href="https://github.com/f/macaron">View on GitHub</a>
+    <div class="shell">
+
+      <header>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <h1>Macaron</h1>
+            <h2>Macros for CoffeeScript</h2>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+      </header>
+
+      <section id="downloads">
+        <span class="inner">
+          <a href="https://github.com/f/macaron/zipball/master" class="zip"><em>download</em> .ZIP</a><a href="https://github.com/f/macaron/tarball/master" class="tgz"><em>download</em> .TGZ</a>
+        </span>
+      </section>
+
+
+      <span class="banner-fix"></span>
+
+
+      <section id="main_content">
+        <h1>
+<a name="macaron" class="anchor" href="#macaron"><span class="octicon octicon-link"></span></a>Macaron</h1>
+
+<p>Macros for CoffeeScript.</p>
+
+<h2>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<div class="highlight highlight-bash"><pre>npm install macaron
+</pre></div>
+
+<h2>
+<a name="overview" class="anchor" href="#overview"><span class="octicon octicon-link"></span></a>Overview</h2>
+
+<p>Create a Macro library:</p>
+
+<div class="highlight highlight-coffeescript"><pre><span class="c1"># macros.coffee</span>
+<span class="nv">macro.swap = </span><span class="nf">(x, y)-&gt;</span>
+  <span class="nv">$tmp = </span><span class="nx">y</span>
+  <span class="nv">y = </span><span class="nx">x</span>
+  <span class="nv">x = </span><span class="nx">$tmp</span>
+</pre></div>
+
+<p>Write your Coffee using macros like functions:</p>
+
+<div class="highlight highlight-coffeescript"><pre><span class="c1"># main.coffee</span>
+<span class="nv">x = </span><span class="mi">1</span>
+<span class="nv">y = </span><span class="mi">2</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">"before: x is </span><span class="si">#{</span><span class="nx">x</span><span class="si">}</span><span class="s">, y is </span><span class="si">#{</span><span class="nx">y</span><span class="si">}</span><span class="s">"</span>
+<span class="nx">swap</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">"after: x is </span><span class="si">#{</span><span class="nx">x</span><span class="si">}</span><span class="s">, y is </span><span class="si">#{</span><span class="nx">y</span><span class="si">}</span><span class="s">"</span>
+</pre></div>
+
+<p>Compile them on Terminal ..:</p>
+
+<div class="highlight highlight-bash"><pre><span class="nv">$ </span>macaron macros.coffee main.coffee
+before: x is 1, y is 2
+after: x is 2, y is 1
+</pre></div>
+
+<p>.. Or in your CoffeeScript Code:</p>
+
+<div class="highlight highlight-coffeescript"><pre><span class="c1"># mycoffee.coffee</span>
+<span class="nv">Macaron = </span><span class="nx">require</span> <span class="s">'macaron'</span>
+<span class="nv">macros = </span><span class="k">new</span> <span class="nx">Macaron</span>
+<span class="nv">compiledJS = </span><span class="nx">macros</span><span class="p">.</span><span class="nx">compileFile</span> <span class="s">'macros.coffee'</span><span class="p">,</span> <span class="s">'main.coffee'</span><span class="p">,</span> <span class="nv">bare: </span><span class="kc">no</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">compiledJS</span>
+</pre></div>
+
+<div class="highlight highlight-bash"><pre>coffee mycoffee.coffee
+</pre></div>
+
+<h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
+
+<div class="highlight highlight-bash"><pre>macaron <span class="o">[</span>MACROS FILE<span class="o">]</span> <span class="o">[</span>SOURCE FILE<span class="o">]</span> <span class="o">[</span>COFFEE OPTIONS<span class="o">]</span>
+</pre></div>
+
+<h3>
+<a name="basic-compilation" class="anchor" href="#basic-compilation"><span class="octicon octicon-link"></span></a>Basic Compilation</h3>
+
+<p>It basically replaces the code with the macro code.</p>
+
+<div class="highlight highlight-javascript"><pre><span class="c1">// $ macaron examples/macros.coffee examples/source.coffee</span>
+<span class="kd">var</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span><span class="p">,</span> <span class="nx">_tmp$1</span><span class="p">;</span>
+<span class="nx">x</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="nx">y</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"before swap, x is "</span> <span class="o">+</span> <span class="nx">x</span> <span class="o">+</span> <span class="s2">", y is "</span> <span class="o">+</span> <span class="nx">y</span><span class="p">);</span>
+
+<span class="c1">// swap x, y macro starts here</span>
+<span class="nx">_tmp$1</span> <span class="o">=</span> <span class="nx">y</span><span class="p">;</span>
+<span class="nx">y</span> <span class="o">=</span> <span class="nx">x</span><span class="p">;</span>
+<span class="nx">x</span> <span class="o">=</span> <span class="nx">_tmp$1</span><span class="p">;</span>
+<span class="c1">// ends here</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"after swap, x is "</span> <span class="o">+</span> <span class="nx">x</span> <span class="o">+</span> <span class="s2">", y is "</span> <span class="o">+</span> <span class="nx">y</span><span class="p">);</span>
+</pre></div>
+
+<h3>
+<a name="using-code-blocks" class="anchor" href="#using-code-blocks"><span class="octicon octicon-link"></span></a>Using Code Blocks</h3>
+
+<p>You can also use code blocks to use efficiently. To do this, just use splats
+of CoffeeScript (<code>...</code>)</p>
+
+<div class="highlight highlight-coffeescript"><pre><span class="nv">macro.scope = </span><span class="nf">(block...)-&gt;</span>
+  <span class="nv">hello = </span><span class="s">"world"</span>
+  <span class="nx">do</span> <span class="nf">-&gt;</span>
+    <span class="nx">block</span>
+</pre></div>
+
+<p>Then you can simply call like a callback</p>
+
+<div class="highlight highlight-coffeescript"><pre><span class="nx">scope</span> <span class="nf">-&gt;</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">hello</span>
+</pre></div>
+
+<p>It will generate that code:</p>
+
+<div class="highlight highlight-javascript"><pre><span class="kd">var</span> <span class="nx">hello</span><span class="p">;</span>
+
+<span class="nx">hello</span> <span class="o">=</span> <span class="s2">"world"</span><span class="p">;</span>
+<span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">hello</span><span class="p">);</span>
+<span class="p">})();</span>
+</pre></div>
+
+<h3>
+<a name="composing" class="anchor" href="#composing"><span class="octicon octicon-link"></span></a>Composing</h3>
+
+<p>You can compose macros.</p>
+
+<div class="highlight highlight-coffeescript"><pre><span class="nv">macro.sayHello = </span><span class="nf">(world)-&gt;</span>
+  <span class="nv">hello = </span><span class="s">"world"</span>
+  <span class="nv">world = </span><span class="s">"hello"</span>
+  <span class="nx">swap</span> <span class="nx">hello</span><span class="p">,</span> <span class="nx">world</span> <span class="c1"># Calling Scope Macro</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">hello</span><span class="p">,</span> <span class="nx">world</span>
+</pre></div>
+
+<h3>
+<a name="hygiene" class="anchor" href="#hygiene"><span class="octicon octicon-link"></span></a>Hygiene</h3>
+
+<p>You can keep your variables safe using <code>$</code> prefix on your variables.</p>
+
+<div class="highlight highlight-coffeescript"><pre><span class="c1"># macros.coffee</span>
+<span class="nv">macro.swap = </span><span class="nf">(x, y)-&gt;</span>
+  <span class="nv">$tmp = </span><span class="nx">y</span>
+  <span class="nv">y = </span><span class="nx">x</span>
+  <span class="nv">x = </span><span class="nx">$tmp</span>
+</pre></div>
+
+<div class="highlight highlight-coffeescript"><pre><span class="c1"># main.coffee</span>
+<span class="nv">x = </span><span class="mi">2</span>
+<span class="nv">y = </span><span class="mi">3</span>
+<span class="nx">swap</span> <span class="nx">x</span><span class="p">,</span> <span class="nx">y</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">$tmp</span>
+</pre></div>
+
+<p>When you run it, it will generate an error:</p>
+
+<pre><code>ReferenceError: $tmp is not defined
+</code></pre>
+
+<h2>
+<a name="todo" class="anchor" href="#todo"><span class="octicon octicon-link"></span></a>TODO</h2>
+
+<ul>
+<li>Create Grunt Plugin</li>
+<li>Browserify Transform</li>
+<li>Do something for WebPack</li>
+</ul><h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>MIT: <a href="http://f.mit-license.org">f.mit-license.org</a></p>
+
+<h3>
+<a name="the-idea" class="anchor" href="#the-idea"><span class="octicon octicon-link"></span></a>The Idea</h3>
+
+<blockquote>
+<p>A fork of <a href="http://github.com/davidpadbury/stirred-coffee">davidpadbury/stirred-coffee</a>, based on the <a href="http://blog.davidpadbury.com/2010/12/09/making-macros-in-coffeescript/">blog post</a> about it.</p>
+</blockquote>
+      </section>
+
+      <footer>
+        <span class="ribbon-outer">
+          <span class="ribbon-inner">
+            <p>this project by <a href="https://github.com/f">f</a> can be found on <a href="https://github.com/f/macaron">GitHub</a></p>
+          </span>
+          <span class="left-tail"></span>
+          <span class="right-tail"></span>
+        </span>
+        <p>Generated with <a href="http://pages.github.com">GitHub Pages</a> using Merlot</p>
+        <span class="octocat"></span>
+      </footer>
+
+    </div>
+
+    
+  </body>
+</html>
