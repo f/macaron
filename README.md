@@ -53,7 +53,7 @@ coffee mycoffee.coffee
 ## Usage
 
 ```bash
-macaron [MACROS FILE] [SOURCE FILE] [COFFEE OPTIONS]
+macaron [MACROS FILE] [SOURCE FILES...] [COFFEE OPTIONS]
 ```
 
 ### Basic Compilation
