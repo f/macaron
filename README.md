@@ -145,6 +145,37 @@ When you run it, it will generate an error:
 ReferenceError: $tmp is not defined
 ```
 
+## Examples
+
+```coffeescript
+# macros.coffee
+macro.each = (variable, name, eachBlock...)->
+  value = variable
+  value.forEach ->
+    $item = arguments[0]
+    name = $item
+    eachBlock
+```
+
+Using this macro:
+
+```coffeescript
+each [1, 2, 3], item, ->
+  console.log item
+```
+
+And it'll generate that code:
+
+```javascript
+value = [1, 2];
+value.forEach(function() {
+  var item, _item$2;
+  _item$2 = arguments[0];
+  item = _item$2;
+  return console.log(item);
+});
+```
+
 ### Reading from STDIN
 
 You can simply use standard input to run macaron:

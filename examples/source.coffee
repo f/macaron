@@ -6,3 +6,6 @@ console.log "before swap, x is #{x}, y is #{y}"
 swap x, y
 
 console.log "after swap, x is #{x}, y is #{y}"
+
+each [1, 2], item, ->
+  console.log item
