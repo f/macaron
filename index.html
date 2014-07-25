@@ -102,7 +102,7 @@ after: x is 2, y is 1
 <h2>
 <a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
 
-<div class="highlight highlight-bash"><pre>macaron <span class="o">[</span>MACROS FILE<span class="o">]</span> <span class="o">[</span>SOURCE FILE<span class="o">]</span> <span class="o">[</span>COFFEE OPTIONS<span class="o">]</span>
+<div class="highlight highlight-bash"><pre>macaron <span class="o">[</span>MACROS FILE<span class="o">]</span> <span class="o">[</span>SOURCE FILES...<span class="o">]</span> <span class="o">[</span>COFFEE OPTIONS<span class="o">]</span>
 </pre></div>
 
 <h3>
@@ -131,7 +131,8 @@ after: x is 2, y is 1
 <p>You can also use code blocks to use efficiently. To do this, just use splats
 of CoffeeScript (<code>...</code>)</p>
 
-<div class="highlight highlight-coffeescript"><pre><span class="nv">macro.scope = </span><span class="nf">(block...)-&gt;</span>
+<div class="highlight highlight-coffeescript"><pre><span class="c1"># Create a macro named do_something which accepts a code block</span>
+<span class="nv">macro.do_something = </span><span class="nf">(block...)-&gt;</span>
   <span class="nv">hello = </span><span class="s">"world"</span>
   <span class="nx">do</span> <span class="nf">-&gt;</span>
     <span class="nx">block</span>
@@ -139,7 +140,8 @@ of CoffeeScript (<code>...</code>)</p>
 
 <p>Then you can simply call like a callback</p>
 
-<div class="highlight highlight-coffeescript"><pre><span class="nx">scope</span> <span class="nf">-&gt;</span>
+<div class="highlight highlight-coffeescript"><pre><span class="c1"># Call the macro with a code block</span>
+<span class="nx">do_something</span> <span class="nf">-&gt;</span>
   <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">hello</span>
 </pre></div>
 
