@@ -90,3 +90,5 @@ module.exports = class Macaron
     @hygieneId ?= 0
     @hygieneId++
     @hygienicVariableTemplate name, @hygieneId
+
+if window then window.Macaron = Macaron

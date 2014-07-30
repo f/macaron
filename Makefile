@@ -1,4 +1,6 @@
 default:
+	rm -rf dist/
 	coffee -co dist/ lib/index.coffee 
-	browserify dist/index.js > dist/index.js
-	uglifyjs dist/index.js > dist/index.min.js
+	browserify dist/index.js > dist/_tmp.js
+	uglifyjs dist/_tmp.js > dist/index.min.js
+	rm -f dist/_tmp.js
