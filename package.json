@@ -27,6 +27,7 @@
   "homepage": "https://github.com/f/macaron",
   "dependencies": {
     "coffee-script": "^1.7.1",
+    "lodash": "^2.4.1",
     "optimist": "^0.6.1"
   }
 }

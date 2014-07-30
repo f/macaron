@@ -130,6 +130,29 @@ macro.sayHello = (world)->
   console.log hello, world
 ```
 
+### Replace Macros
+
+Replace macros are so stupid ones, you can just pass the code to *replace*.
+The code won't be parsed by Macaron. To define replace macros, use `do` keyword.
+This macro type doesn't take any parameters since there are no parse process.
+
+```coffeescript
+macro.strict = do ->
+  "use strict"
+```
+
+You can use `do` keyword to call these macros:
+
+```coffeescript
+do strict
+```
+
+It will generate the output:
+
+```coffeescript
+"use strict";
+```
+
 ### Hygiene
 
 You can keep your variables safe using `$` prefix on your variables.
@@ -154,6 +177,15 @@ When you run it, it will generate an error:
 ```
 ReferenceError: $tmp is not defined
 ```
+
+#### Escape Hygiene
+
+You can always disable hygiene using **fat-arrow** (`=>`) or just don't use `$` prefix.
+
+macro.swap = (x, y)=> # disabling hygienic variables
+  $tmp = y
+  y = x
+  x = $tmp
 
 ## Examples
 

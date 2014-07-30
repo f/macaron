@@ -52,30 +52,41 @@ module.exports = class Macaron
     name = node.variable?.base?.value
     return unless @macroExists name
 
-    macro = Object.create @macros[name]
+    macro = Cloner.clone @macros[name]
 
     args = {}
     vars = {}
+    
+    macroType = macro.variable?.base?.value
 
-    for param, i in macro.params
-      name = param.name.value
-      if param.splat
-        # Unwrap body of expression
-        args[name] = node.args[i].body
+    macroBody = switch yes
+      # Direct Macros
+      when macro.do
+        macro.variable?.body
+
+      # Another case
       else
-        args[name] = node.args[i]
+        for param, i in macro.params
+          name = param.name.value
+          if param.splat
+            # Unwrap body of expression
+            args[name] = node.args[i].body
+          else
+            args[name] = node.args[i]
 
-    @walkAndReplace macro, (node, replace) =>
-      return if node.constructor.name isnt 'Value'
-      ref = node.base?.value
-      if args[ref]
-        replace args[ref]
-      else if ref?.indexOf('$') is 0
-        name = ref.substring 1
-        name = vars[name] or= @generateHygienicName name
-        node.base.value = name
+        @walkAndReplace macro, (node, replace) =>
+          return if node.constructor.name isnt 'Value'
+          ref = node.base?.value
+          if args[ref]
+            replace args[ref]
+          # macro.bound checks if fat-arrow used.
+          else if ref?.indexOf('$') is 0 and not macro.bound
+            name = ref.substring 1
+            name = vars[name] or= @generateHygienicName name
+            node.base.value = name
+        macro.body
 
-    replace macro.body
+    replace macroBody
 
   getSource: (file)->
     fs.readFileSync(file).toString()
@@ -91,4 +102,28 @@ module.exports = class Macaron
     @hygieneId++
     @hygienicVariableTemplate name, @hygieneId
 
+# Cloner Class
+
+class Cloner
+  
+  @clone: (object)->
+    switch typeof object
+      when 'undefined', 'number', 'string', 'boolean', 'function'
+        object
+      when 'object'
+        cloner = if object instanceof Array then 'array' else 'object'
+        Cloner[cloner] object
+      else
+        console.log "Non-clonable #{typeof object}"
+
+  @array: (data=[])-> Cloner.clone item for item in data
+  
+  @object: (data={})->
+    cloned = {}
+    for key, value of data
+      cloned[key] = Cloner.clone value
+    cloned.constructor = data.constructor
+    cloned.__proto__ = data.__proto__
+    cloned
+  
 if window then window.Macaron = Macaron

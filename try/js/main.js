@@ -25,7 +25,9 @@ function compile() {
   try {
     var macaron = new Macaron();
     result.setValue("// The Result\n\n" + macaron.compileSource(macros.getValue(), source.getValue(), {bare: true}));
-  } catch (e) { }
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 compile();
