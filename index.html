@@ -5,10 +5,12 @@
   <title>Try Macaron</title>
   <link rel="stylesheet" href="css/lib/codemirror.css" type="text/css" media="screen" charset="utf-8">
   <link rel="stylesheet" href="css/lib/mdn-like.css" type="text/css" media="screen" charset="utf-8">
+  <link rel="stylesheet" href="css/lib/monokai.min.css" type="text/css" media="screen" charset="utf-8">
   <link rel="stylesheet" href="css/main.css" type="text/css" media="screen" charset="utf-8">
 </head>
 <body>
 <img src="img/macaron-logo.png" class="logo" alt="Macaron" height="30">
+<button id="run">RUN</button>
 <div class="try">
 <textarea class="macros" id="macros" cols="30" rows="10">
 # Your Macros  
@@ -32,6 +34,7 @@ console.log x, y
 </textarea>
 <div class="clean"></div>
 <textarea class="result" id="result" cols="30" rows="10"></textarea>
+<textarea class="console" id="console" cols="30" rows="10"></textarea>
 </div>
 <script type="text/javascript" charset="utf-8" src="js/macaron.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/lib/codemirror.min.js"></script>

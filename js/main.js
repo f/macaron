@@ -21,6 +21,13 @@ var result = CodeMirror.fromTextArea(document.getElementById("result"), {
   readOnly: true
 });
 
+var csl = document.getElementById('console');
+var consol = CodeMirror.fromTextArea(csl, {
+  theme: "monokai",
+  lineNumbers: true,
+  readOnly: true
+});
+
 function compile() {
   try {
     var macaron = new Macaron();
@@ -29,7 +36,36 @@ function compile() {
 };
 
 compile();
+
+function run() {
+  try {
+    var console = {}
+    console.log = function() {
+      var args = Array.prototype.slice.call(arguments);
+      window.console.log.apply(window.console, arguments);
+      consol.setValue(consol.getValue().concat(args.join(' '), '\n'));
+    };
+    console.error = console.log;
+    console.warn = console.log;
+    console.info = console.log;
+    console.clear = function () { console.setValue(''); }
+    eval(result.getValue());
+  } catch (e) { console.log(e); }
+};
+
+function close(n) {
+  csl.className = csl.className.replace(/ active/, '');
+  consol.setValue('');
+}
+
 macros.on('keyup', compile);
 source.on('keyup', compile);
 result.on('keyup', compile);
-
+macros.on('focus', close);
+source.on('focus', close);
+document.getElementById('run').onclick = function () {
+  compile();
+  run();
+  csl.className = csl.className.replace(/ active/, '');
+  csl.className += " active";
+};
