@@ -13,7 +13,7 @@ npm install macaron
 Macaron has a [Grunt plugin](http://github.com/ahmet/grunt-macaron) written by [Ahmet Aygün](http://github.com/ahmet).
 
 ```bash
-npm install grunt-macaron
+npm install grunt-macaron --save-dev
 ```
 
 Please read the [README file of grunt-macaron](https://github.com/ahmet/grunt-macaron/blob/master/README.md) for installation instructions.
