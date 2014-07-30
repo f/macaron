@@ -2,7 +2,7 @@
   "name": "macaron",
   "version": "0.1.0",
   "description": "CoffeeScript Macros",
-  "main": "index.coffee",
+  "main": "main.coffee",
   "bin": {
     "macaron": "./bin/macaron"
   },
