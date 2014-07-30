@@ -15,22 +15,33 @@
 <textarea class="macros" id="macros" cols="30" rows="10">
 # Your Macros  
 
+# Too famous `swap` macro
 macro.swap = (x, y)->
   $tmp = x
   x = y
   y = $tmp
+
+# using splats to get whole body
+macro.func = (func_name, func...)->
+  func_name = ->
+    "use strict"
+    func
 </textarea>
 <textarea class="source" id="source" cols="30" rows="10">
 # Your Source  
 
-x = 1
-y = 2
-console.log x, y
+# create strict function using `func` macro.
+func hello, ->
+  name    = "john"
+  surname = "doe"
+  
+  # use swap macro
+  swap name, surname
 
-# use your macro
-swap x, y
+  console.log "Hello #{name}, #{surname}"
+  
+hello() # => Hello doe, john
 
-console.log x, y
 </textarea>
 <div class="clean"></div>
 <textarea class="result" id="result" cols="30" rows="10"></textarea>
