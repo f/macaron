@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "macaron": "./node_modules/.bin/coffee ./bin/macaron"
+    "macaron": "./node_modules/.bin/coffee ./bin/macaron",
+    "build": "make"
   },
   "repository": {
     "type": "git",
