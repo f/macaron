@@ -182,10 +182,12 @@ ReferenceError: $tmp is not defined
 
 You can always disable hygiene using **fat-arrow** (`=>`) or just don't use `$` prefix.
 
+```coffeescript
 macro.swap = (x, y)=> # disabling hygienic variables
   $tmp = y
   y = x
   x = $tmp
+```
 
 ## Examples
 
