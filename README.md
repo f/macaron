@@ -1,6 +1,6 @@
 # Macaron
 
-Macros for CoffeeScript.
+Macros for CoffeeScript. Try online: [http://f.github.io/macaron/](http://f.github.io/macaron/)
 
 ## Installation
 
