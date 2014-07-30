@@ -8,6 +8,16 @@ Macros for CoffeeScript.
 npm install macaron
 ```
 
+### Using Macaron Grunt Task
+
+Macaron has a [Grunt plugin](http://github.com/ahmet/grunt-macaron) written by [Ahmet Aygün](http://github.com/ahmet).
+
+```bash
+npm install grunt-macaron --save-dev
+```
+
+Please read the [README file of grunt-macaron](https://github.com/ahmet/grunt-macaron/blob/master/README.md) for installation instructions.
+
 ## Overview
 
 Create a Macro library:
@@ -197,9 +207,7 @@ Options:
 
 ## TODO
 
-  - Create Grunt Plugin
   - Browserify Transform
-  - Do something for WebPack
 
 ## License
 
