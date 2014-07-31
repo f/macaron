@@ -26,6 +26,19 @@ macro.func = (func_name, func...)->
   func_name = ->
     "use strict"
     func
+
+# some literal macros
+    
+literal /assign (.*) to (.*)/, (first, second)->
+  second = first
+  
+literal /(.*) is actually (.*)/, (first, second)->
+  first = second
+  console.log "Changed using literal"
+
+literal /(.*) greater than (.*)/, (f, s)->
+  f > s
+
 </textarea>
 <textarea class="source" id="source" cols="30" rows="10">
 # Your Source  
@@ -39,15 +52,23 @@ func hello, ->
   swap name, surname
 
   console.log "Hello #{name}, #{surname}"
-  
-hello() # => Hello doe, john
+
+# use a literal macro
+"world is actually hello"
+
+world() # => Hello doe, john
+
+# use a literal macro inline
+if "10 greater than 5"
+  console.log "10 is great! Long live 10!"
 
 </textarea>
+
 <div class="clean"></div>
 <textarea class="result" id="result" cols="30" rows="10"></textarea>
 <textarea class="console" id="console" cols="30" rows="10"></textarea>
 </div>
-<script type="text/javascript" charset="utf-8" src="js/macaron.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="https://rawgit.com/f/macaron/master/dist/index.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/lib/codemirror.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/lib/javascript.js"></script>
 <script type="text/javascript" charset="utf-8" src="js/lib/coffeescript.js"></script>

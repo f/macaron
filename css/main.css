@@ -52,9 +52,9 @@ textarea {
   position: absolute;
   width: 100%;
   float: none;
-  height: 150px;
+  height: 350px;
   z-index: 10;
-  bottom: -150px;
+  bottom: -350px;
   border-top: 5px solid #ff9494;
   -webkit-transition-duration: 500ms;
   transition-duration: 500ms;
