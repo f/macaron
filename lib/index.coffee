@@ -9,6 +9,7 @@ module.exports = class Macaron
 
   compileSource: (macroSource, mainSource, options)->
     @macros = @parseMacros macroSource
+    @literals = @parseLiterals macroSource
     @mainNodes = @getNodes mainSource
     @compile options
 
@@ -22,6 +23,7 @@ module.exports = class Macaron
 
   compile: (options=@options)->
     @walkAndReplace @mainNodes, @macroize.bind(this)
+    @walkAndReplace @mainNodes, @literalize.bind(this)
     @mainNodes.compile options
 
   parseMacros: (source)->
@@ -32,6 +34,15 @@ module.exports = class Macaron
         name = node.variable.properties?[0]?.name?.value.toString()
         macros[name] = node.value
     macros
+
+  parseLiterals: (source)->
+    literals = []
+    nodes = @getNodes source
+    nodes.expressions.forEach (node) =>
+      if node.variable.base.value is 'literal'
+        regexp = new RegExp "^#{(node.args[0]?.base?.value?.replace? /^\/|\/$/g, '')}$"
+        literals.push [regexp, node.args[1]]
+    literals
 
   walkAndReplace: (node, replacer) ->
     node.children?.forEach (childName) =>
@@ -45,6 +56,37 @@ module.exports = class Macaron
       else
         replacer child, (replacement) -> child = node[childName] = replacement
         @walkAndReplace child, replacer
+
+  literalize: (node, replace) ->
+    return if node.constructor.name isnt 'Literal'
+
+      args = {}
+
+      for [literal, macro] in @literals
+        macro = Cloner.clone macro
+        _matches = node.base?.value?.replace?(/^["']|["']$/g, '').match literal
+        continue unless _matches
+        _matches.shift()
+        matches = (arg for arg in _matches)
+
+        for param, i in macro.params
+          name = if param.name.this
+            param.name.properties?[0]?.name?.value
+          else
+            param.name.value
+
+          args[name] = [matches[i], param.name.this]
+
+        @walkAndReplace macro, (node, replace) =>
+          return if node.constructor.name isnt 'Value'
+          ref = node.base?.value
+          if args[ref] instanceof Array
+            [arg, isString] = args[ref]
+            if arg
+              arg = "\"#{arg}\"" if isString
+              replace @getNodes arg
+      
+        replace macro.body
 
   macroize: (node, replace) ->
     return if node.constructor.name isnt 'Call'

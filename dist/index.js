@@ -17,6 +17,7 @@
 
     Macaron.prototype.compileSource = function(macroSource, mainSource, options) {
       this.macros = this.parseMacros(macroSource);
+      this.literals = this.parseLiterals(macroSource);
       this.mainNodes = this.getNodes(mainSource);
       return this.compile(options);
     };
@@ -40,6 +41,7 @@
         options = this.options;
       }
       this.walkAndReplace(this.mainNodes, this.macroize.bind(this));
+      this.walkAndReplace(this.mainNodes, this.literalize.bind(this));
       return this.mainNodes.compile(options);
     };
 
@@ -57,6 +59,22 @@
         };
       })(this));
       return macros;
+    };
+
+    Macaron.prototype.parseLiterals = function(source) {
+      var literals, nodes;
+      literals = [];
+      nodes = this.getNodes(source);
+      nodes.expressions.forEach((function(_this) {
+        return function(node) {
+          var regexp, _ref, _ref1, _ref2;
+          if (node.variable.base.value === 'literal') {
+            regexp = new RegExp("^" + ((_ref = node.args[0]) != null ? (_ref1 = _ref.base) != null ? (_ref2 = _ref1.value) != null ? typeof _ref2.replace === "function" ? _ref2.replace(/^\/|\/$/g, '') : void 0 : void 0 : void 0 : void 0) + "$");
+            return literals.push([regexp, node.args[1]]);
+          }
+        };
+      })(this));
+      return literals;
     };
 
     Macaron.prototype.walkAndReplace = function(node, replacer) {
@@ -86,6 +104,59 @@
           }
         };
       })(this)) : void 0;
+    };
+
+    Macaron.prototype.literalize = function(node, replace) {
+      var arg, args, i, literal, macro, matches, name, param, _i, _j, _len, _len1, _matches, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _results;
+      if (node.constructor.name !== 'Literal') {
+        args = {};
+        _ref = this.literals;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          _ref1 = _ref[_i], literal = _ref1[0], macro = _ref1[1];
+          macro = Cloner.clone(macro);
+          _matches = (_ref2 = node.base) != null ? (_ref3 = _ref2.value) != null ? typeof _ref3.replace === "function" ? _ref3.replace(/^["']|["']$/g, '').match(literal) : void 0 : void 0 : void 0;
+          if (!_matches) {
+            continue;
+          }
+          _matches.shift();
+          matches = (function() {
+            var _j, _len1, _results1;
+            _results1 = [];
+            for (_j = 0, _len1 = _matches.length; _j < _len1; _j++) {
+              arg = _matches[_j];
+              _results1.push(arg);
+            }
+            return _results1;
+          })();
+          _ref4 = macro.params;
+          for (i = _j = 0, _len1 = _ref4.length; _j < _len1; i = ++_j) {
+            param = _ref4[i];
+            name = param.name["this"] ? (_ref5 = param.name.properties) != null ? (_ref6 = _ref5[0]) != null ? (_ref7 = _ref6.name) != null ? _ref7.value : void 0 : void 0 : void 0 : param.name.value;
+            args[name] = [matches[i], param.name["this"]];
+          }
+          this.walkAndReplace(macro, (function(_this) {
+            return function(node, replace) {
+              var isString, ref, _ref8, _ref9;
+              if (node.constructor.name !== 'Value') {
+                return;
+              }
+              ref = (_ref8 = node.base) != null ? _ref8.value : void 0;
+              if (args[ref] instanceof Array) {
+                _ref9 = args[ref], arg = _ref9[0], isString = _ref9[1];
+                if (arg) {
+                  if (isString) {
+                    arg = "\"" + arg + "\"";
+                  }
+                  return replace(_this.getNodes(arg));
+                }
+              }
+            };
+          })(this));
+          _results.push(replace(macro.body));
+        }
+        return _results;
+      }
     };
 
     Macaron.prototype.macroize = function(node, replace) {

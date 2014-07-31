@@ -189,6 +189,10 @@ macro.swap = (x, y)=> # disabling hygienic variables
   x = $tmp
 ```
 
+#### Literal Macros
+
+You can use Literal macros.
+
 ## Examples
 
 ```coffeescript
