@@ -191,7 +191,45 @@ macro.swap = (x, y)=> # disabling hygienic variables
 
 #### Literal Macros
 
-You can use Literal macros.
+You can use Literal macros using `literal` definition keyword. It takes two arguments,
+one is a **regular expression**, another is the function.
+
+```coffeescript
+literal /(\w+) is (\w+) plus (\w+)/, (variable, first, second)->
+  variable = first + second
+    
+literal /tell (.*) the (\w+)/, (channel, parameter)->
+  channel parameters
+```
+
+With these **literal macros** you can now write some talkative declarations:
+
+```coffeescript
+"a is 3 plus 4"
+"tell console.log the a"
+```
+
+It will generate the output:
+
+```javascript
+var a;
+a = 3 + 4;
+console.log(a);
+```
+
+You can wrap matches into quotes using `@` (`this`) prefix on parameters.
+
+```coffeescript
+literal /tell my (\w+) is (.*)/, (@key, @value)->
+  user[key] = value
+```
+
+You can now use the macros easily:
+
+```coffeescript
+"tell my name is fka" #=> It will be compiled to `user["name"] = "fka"`
+```
+
 
 ## Examples
 
