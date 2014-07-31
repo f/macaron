@@ -63,12 +63,12 @@ module.exports = class Macaron
       args = {}
 
       for [literal, macro] in @literals
-        macro = Cloner.clone macro
         _matches = node.base?.value?.replace?(/^["']|["']$/g, '').match literal
         continue unless _matches
         _matches.shift()
         matches = (arg for arg in _matches)
 
+        macro = Cloner.clone macro
         for param, i in macro.params
           name = if param.name.this
             param.name.properties?[0]?.name?.value

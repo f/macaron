@@ -114,7 +114,6 @@
         _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           _ref1 = _ref[_i], literal = _ref1[0], macro = _ref1[1];
-          macro = Cloner.clone(macro);
           _matches = (_ref2 = node.base) != null ? (_ref3 = _ref2.value) != null ? typeof _ref3.replace === "function" ? _ref3.replace(/^["']|["']$/g, '').match(literal) : void 0 : void 0 : void 0;
           if (!_matches) {
             continue;
@@ -129,6 +128,7 @@
             }
             return _results1;
           })();
+          macro = Cloner.clone(macro);
           _ref4 = macro.params;
           for (i = _j = 0, _len1 = _ref4.length; _j < _len1; i = ++_j) {
             param = _ref4[i];
