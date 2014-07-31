@@ -33,18 +33,35 @@ textarea {
 }
 #run {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 22px;
+  right: 150px;
   width: 100px;
   height: 30px;
-  background-color: #FF9494;
-  color: #fff;
+  background-color: #A9EFBA;
+  color: #888;
   border: 0;
-  border-radius: 15px;
+  border-radius: 30px 30px 0 0;
   outline: 0;
   cursor: pointer;
+  font-weight:bold;
 }
-#run:active {
+#close {
+  position: absolute;
+  top: 56px;
+  right: 150px;
+  width: 100px;
+  height: 30px;
+  background-color: #EAEFA9;
+  color: #888;
+  border: 0;
+  border-radius: 0 0 30px 30px;
+  outline: 0;
+  cursor: pointer;
+  z-index:12;
+  font-weight:bold;
+}
+
+#run:active, #close:active {
   opacity: 0.7; 
 }
 
@@ -52,9 +69,9 @@ textarea {
   position: absolute;
   width: 100%;
   float: none;
-  height: 350px;
+  height: 100%;
   z-index: 10;
-  bottom: -350px;
+  bottom: -100%;
   border-top: 5px solid #ff9494;
   -webkit-transition-duration: 500ms;
   transition-duration: 500ms;

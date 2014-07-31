@@ -50,12 +50,14 @@ function run() {
     console.info = console.log;
     console.clear = function () { console.setValue(''); }
     eval(result.getValue());
-  } catch (e) { console.log(e); }
+    document.getElementById('close').style.display = 'block';
+  } catch (e) {}
 };
 
 function close(n) {
   csl.className = csl.className.replace(/ active/, '');
   consol.setValue('');
+  document.getElementById('close').style.display = 'none';
 }
 
 macros.on('keyup', compile);
@@ -69,3 +71,4 @@ document.getElementById('run').onclick = function () {
   csl.className = csl.className.replace(/ active/, '');
   csl.className += " active";
 };
+document.getElementById('close').onclick = close;
