@@ -189,7 +189,7 @@ macro.swap = (x, y)=> # disabling hygienic variables
   x = $tmp
 ```
 
-#### Literal Macros
+### Literal Macros
 
 You can use Literal macros using `literal` definition keyword. It takes two arguments,
 one is a **regular expression**, another is the function.
