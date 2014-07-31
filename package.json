@@ -1,6 +1,6 @@
 {
   "name": "macaron",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "CoffeeScript Macros",
   "main": "main.js",
   "bin": {
