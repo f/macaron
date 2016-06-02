@@ -168,4 +168,4 @@ class Cloner
     cloned.__proto__ = data.__proto__
     cloned
   
-if window then window.Macaron = Macaron
+if window? then window.Macaron = Macaron
